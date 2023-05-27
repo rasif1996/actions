@@ -25,5 +25,3 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: build-files
-            - name: Start app
-              run: npm run start
