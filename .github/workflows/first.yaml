@@ -8,7 +8,7 @@ on:
 env:
     REGISTRY: 'docker.io'
     IMAGE_NAME: 'rasif1996/react'
-    PORT: 3000
+    CONTAINER_PORT: 3000
 jobs:
     build_and_push:
         runs-on: ubuntu-latest
@@ -17,7 +17,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Build container image
-              run: docker build --build-arg PORT=$(echo $PORT) -t "$(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)" .
+              run: docker build --build-arg PORT=$(echo $CONTAINER_PORT) -t "$(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)" .
 
             - name: Log in to Docker Hub
               run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
@@ -44,5 +44,5 @@ jobs:
                       docker run -d \
                       --restart always \
                       --name container \
-                      -p 80:$(echo $PORT) \
+                      -p 80:$(echo $CONTAINER_PORT) \
                       $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
