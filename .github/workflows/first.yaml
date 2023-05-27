@@ -43,6 +43,6 @@ jobs:
                       docker pull $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
                       docker run -d \
                       --restart always \
-                      --name $(echo $IMAGE_NAME) \
+                      --name container \
                       -p 80:3333 \
                       $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
