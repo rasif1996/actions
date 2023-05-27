@@ -5,6 +5,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@1
+              uses: actions/checkout@v3
             - name: Test app
               run: npm run test
