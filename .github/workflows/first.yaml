@@ -38,10 +38,10 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   envs: IMAGE_NAME,GITHUB_SHA
                   script: |
-                      sudo docker stop $(echo $IMAGE_NAME)
-                      sudo docker rm $(echo $IMAGE_NAME)
-                      sudo docker pull $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-                      sudo docker run -d \
+                      docker stop $(echo $IMAGE_NAME)
+                      docker rm $(echo $IMAGE_NAME)
+                      docker pull $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+                      docker run -d \
                       --restart always \
                       --name $(echo $IMAGE_NAME) \
                       -p 80:3333
