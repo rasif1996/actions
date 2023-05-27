@@ -1,5 +1,8 @@
 FROM node:latest 
 
+ARG PORT
+ENV PORT=${PORT}
+
 WORKDIR /app 
 
 COPY package*.json ./
