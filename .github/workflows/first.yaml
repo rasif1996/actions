@@ -1,0 +1,10 @@
+name: First test action
+on: [push]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@1
+            - name: Test app
+              run: npm run test

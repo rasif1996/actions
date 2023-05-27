@@ -3,3 +3,7 @@
 Первым делом создадим новый реакт проект 
 
 npx create-react-app .
+
+Теперь создаем свой workflow. Для этого нужно создать файл
+
+.github/workflows/first.yaml
