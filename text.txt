@@ -175,3 +175,6 @@ J1AQ==
 
     username: rasif 
     port: 3333
+
+
+sudo usermod -aG docker rasif
