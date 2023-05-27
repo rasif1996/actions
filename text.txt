@@ -7,3 +7,56 @@ npx create-react-app .
 Теперь создаем свой workflow. Для этого нужно создать файл
 
 .github/workflows/first.yaml
+
+И внутри файла положим код для тестирования при отправке в мастер ветку
+
+name: First test action
+on: [push]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - name: Install dependencies
+              run: npm install
+            - name: Test app
+              run: npm run test
+
+Указываем название, говорим, в каком случае нужно вызвать и затем описываем задачи для выполнения
+Внутри задачи выбираем операционную систему, на которой нужно будет выполнять нашу задачу,
+И только после этого указываем конкретные последовательные шаги, чтобы дойти до цели 
+Первым делом выбираем наш репозиторий и кладем в виртуальную машину,
+Устанавливаем зависимости,
+И выполняем тест.
+
+Но мы же не просто хотим протестировать наш проект, верно?
+Нужно еще и запустить. Усложняем:
+
+name: First test action
+on: [push]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - name: Install dependencies
+              run: npm install
+            - name: Test app
+              run: npm run test
+    build:
+        runs-on: ubuntu-latest
+        needs: [test]
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - name: Install dependencies
+              run: npm install
+            - name: Build app
+              run: npm run build
+
+Мы добавили еще одну задачу - собрать проект.
+Но собирать проект мы будет при условии, если все успешно завершится в тесте
+Для этого мы говорим в needs.
+И шаги аналогичные.
