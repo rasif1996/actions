@@ -62,3 +62,116 @@ jobs:
 И шаги аналогичные.
 
 Теперь, если у нас тест не пройдет, то сборка не начнется, что мы и хотели
+
+Чтобы в каждой задачи не повторять некоторые действия, связанные со скачиванием и установкой, 
+мы можем использовать различные артефакты
+
+name: First test action
+on: [push]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - name: Install dependencies
+              run: npm install
+            - name: Build app
+              run: npm run build
+            - name: Test app
+              run: npm run test
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: build-files
+                  path: build
+    build:
+        runs-on: ubuntu-latest
+        needs: [test]
+        steps:
+            - name: Get build artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: build-files
+
+Напишем способ подключения к нашему удаленному серверу 
+
+name: Build & Deploy
+on:
+    push:
+        branches: [master]
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            - name: Deploy App
+              uses: appleboy/ssh-action@v0.1.2
+              with:
+                  host: ${{secrets.SSH_HOST}}
+                  key: ${{secrets.SSH_KEY}}
+                  username: ${{secrets.SSH_USERNAME}}
+                  port: ${{secrets.SSH_PORT}}
+                  script: |
+                      mkdir test
+                      cd test
+                      git clone git@github.com:rasif1996/node-app.git
+                      echo 'Deployment successful to digital ocean'
+
+Нашие данные:
+    host: 164.92.170.7
+    key: 
+-----BEGIN OPENSSH PRIVATE KEY-----
+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
+J1AQ==
+-----END OPENSSH PRIVATE KEY-----
+
+    username: rasif 
+    port: 3333
